@@ -258,42 +258,91 @@ class buildHeap:
         print('-' * total_width)
 
 
-# --------------------------------------------------------------------------------------------
-"""Given inputs"""
-inputs = [10, 12, 1, 14, 6, 5, 8, 15, 3, 9, 7, 4, 11, 13, 2]
-# --------------------------------------------------------------------------------------------
-print('\n\n')
-print("""Using successive insertion O(n*LogN)""")
-heap = binaryHeap(len(inputs))
-for i in inputs:  # insertion loop
-    heap.insert(i)
-heap.show_tree()
-print('Level Order:           ', heap.storage)
-print('In Order Traversing:   ', heap.inOrder(0, []))
-print('Pre Order Traversing:  ', heap.preOrder(0, []))
-print('Post Order Traversing: ', heap.postOrder(0, []))
-print('\n')
-print('*************' * 10)
-# --------------------------------------------------------------------------------------------
-print('\n')
-print("""Using linear algorithm O(n)""")
-built = buildHeap(inputs)
-built.show_tree()
-print('Level Order:           ', built.storage)
-print('In Order Traversing:   ', built.inOrder(0, []))
-print('Pre Order Traversing:  ', built.preOrder(0, []))
-print('Post Order Traversing: ', built.postOrder(0, []))
-print('*************' * 10)
-# --------------------------------------------------------------------------------------------
-print('\n')
-print("""Measuring time complexity using different inputs""")
-cycles = 10
-setUp = """
-"""
-usingList = """print('here')"""
-runningTime_List = timeit.repeat(stmt=usingList, repeat=cycles,
-                                 setup=setUp,
-                                 number=1)
-averageList = '{:.10f}'.format(sum(runningTime_List) / len(runningTime_List))
-print("List:\nAverage running time ( %s cycles )->  %s" % (cycles, averageList))
-print('\n')
+def presentingAlgorithms():
+    # --------------------------------------------------------------------------------------------
+    """Given inputs"""
+    inputs = [10, 12, 1, 14, 6, 5, 8, 15, 3, 9, 7, 4, 11, 13, 2]
+    # --------------------------------------------------------------------------------------------
+    print('\n\n')
+    print("""Using successive insertion O(n*LogN)""")
+    heap = binaryHeap(len(inputs))
+    for i in inputs:  # insertion loop
+        heap.insert(i)
+    heap.show_tree()
+    print('Level Order:           ', heap.storage)
+    print('In Order Traversing:   ', heap.inOrder(0, []))
+    print('Pre Order Traversing:  ', heap.preOrder(0, []))
+    print('Post Order Traversing: ', heap.postOrder(0, []))
+    print('\n')
+    print('*************' * 10)
+    # --------------------------------------------------------------------------------------------
+    print('\n')
+    print("""Using linear algorithm O(n)""")
+    built = buildHeap(inputs)
+    built.show_tree()
+    print('Level Order:           ', built.storage)
+    print('In Order Traversing:   ', built.inOrder(0, []))
+    print('Pre Order Traversing:  ', built.preOrder(0, []))
+    print('Post Order Traversing: ', built.postOrder(0, []))
+    print('*************' * 10)
+    # --------------------------------------------------------------------------------------------
+
+
+setUp = '''
+import projectOne
+        '''
+
+
+cycles = 2
+
+numbersFiles = "numbers.txt"
+
+
+def menu(input_number):
+    my_list = []
+    with open(numbersFiles, 'r') as numbers:
+        for x in range(input_number):
+            my_list.append(int(numbers.readline().strip('\n')))
+    return my_list
+
+
+hundred = menu(100)
+one_thousand = menu(1000)
+ten_thousand = menu(10000)
+
+inputsList = [hundred, one_thousand, ten_thousand]
+
+
+def successiveHeap(N):
+    heap = binaryHeap(len(N))
+    for i in N:  # insertion loop
+        heap.insert(i)
+
+
+def buildHeapMethod(N):
+    built = buildHeap(N)
+    built.show_tree()
+
+
+for x in inputsList:
+    print('')
+    print("Running time for N = %s " % len(x))
+    print('successiveHeap Running Time')
+    usingList = "successiveHeap(%s)" % x
+    runningTime_List = timeit.repeat(stmt=usingList, repeat=cycles,
+                                     setup=setUp,
+                                     number=1)
+    averageListSuccessive = '{:.10f}'.format(sum(runningTime_List) / len(runningTime_List))
+    print(cycles, 'Cycles ->', runningTime_List, ' -> Average: ', averageListSuccessive)
+
+    print('------------' * 5)
+    print('BuildHeap/Linear Running Time')
+    usingList = "successiveHeap(%s)" % x
+    runningTime_ListB = timeit.repeat(stmt=usingList, repeat=cycles,
+                                      setup=setUp,
+                                      number=1)
+    averageListBuildHeap = '{:.10f}'.format(sum(runningTime_ListB) / len(runningTime_ListB))
+    print(cycles, ' Cycles ->', runningTime_ListB, ' -> Average: ', averageListBuildHeap)
+
+if __name__ == "__main__":
+    pass
