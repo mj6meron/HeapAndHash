@@ -296,6 +296,3 @@ def successiveHeap(N):
 
 def buildHeapMethod(N):
     built = buildHeap(N)
-
-
-presentingAlgorithms()

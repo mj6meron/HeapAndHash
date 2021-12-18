@@ -1,4 +1,3 @@
-from projectOne import binaryHeap, buildHeap
 import timeit
 
 setUp = '''
@@ -26,18 +25,7 @@ hundred_thousand = menu(100000)
 
 inputsList = [fifteen, hundred, one_thousand, ten_thousand, hundred_thousand]
 
-
-def successiveHeap(N):
-    heap = binaryHeap(len(N))
-    for i in N:  # insertion loop
-        heap.insert(i)
-
-
-def buildHeapMethod(N):
-    built = buildHeap(N)
-
-
-print('AverageTime of %s cycles' % cycles)
+print('Average running time of %s cycles' % cycles)
 for x in inputsList:
     print('')
     usingList = "successiveHeap(%s)" % x
@@ -46,8 +34,8 @@ for x in inputsList:
                                      number=1)
     averageListSuccessive = '{:.10f}'.format(sum(runningTime_List) / len(runningTime_List))
 
-    usingList = "buildHeapMethod(%s)" % x
-    runningTime_ListB = timeit.repeat(stmt=usingList, repeat=cycles,
+    usingList2 = "buildHeapMethod(%s)" % x
+    runningTime_ListB = timeit.repeat(stmt=usingList2, repeat=cycles,
                                       setup=setUp,
                                       number=1)
     averageListBuildHeap = '{:.10f}'.format(sum(runningTime_ListB) / len(runningTime_ListB))
