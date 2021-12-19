@@ -60,7 +60,7 @@ class linearHash:
         self.HashTable = [None] * N
         self.capacity = N
         self.size = 0
-        self.reloadFactor = 0.4
+        self.reloadFactor = 0.9
         self.x = 0
 
     def Hashing(self, keyValue):
@@ -76,8 +76,7 @@ class linearHash:
         self.HashTable[index] = k
         self.size += 1
         self.x = 0
-        if (self.size / self.capacity) >= self.reloadFactor:
-            self.reHash()
+        if self.size == math.floor(self.reloadFactor * self.capacity):            self.reHash()
 
     def reHash(self):
         self.size = 0
@@ -118,7 +117,7 @@ class quadraticHash:
         self.HashTable[index] = k
         self.size += 1
         self.x = 0
-        if (self.size / self.capacity) >= self.reloadFactor:
+        if self.size == math.floor(self.reloadFactor * self.capacity):
             self.reHash()
 
     def display_hash(self):
@@ -143,11 +142,11 @@ class doubleFunctionHash:
         self.HashTable = [None] * N
         self.capacity = N
         self.size = 0
-        self.reloadFactor = 0.4
+        self.reloadFactor = 0.9
         self.x = 0
 
     def Hashing(self, keyValue):
-        return keyValue % len(self.HashTable)
+        return keyValue % self.capacity
 
     def Hashing2(self, keyValue):
         value = 7 - (keyValue % 7)
@@ -156,23 +155,22 @@ class doubleFunctionHash:
         return value
 
     def insert(self, keyValue):
-        index = self.Hashing(keyValue, self.x)
-
+        index = self.Hashing(keyValue)
         while self.HashTable[index] is not None:
             self.x += 1
-            p = (self.Hashing2(keyValue) % self.capacity)
-            index = self.Hashing(keyValue, p)
+            p = ((self.Hashing2(keyValue) * self.x) % self.capacity)
+            index = (self.Hashing(keyValue) + p) % self.capacity
         k = keyValue if self.HashTable[index] is None else self.HashTable[index]  # technique to replace none by int
         self.HashTable[index] = k
         self.size += 1
         self.x = 0
-        if (self.size / self.capacity) >= self.reloadFactor:
+        if self.size == math.floor(self.reloadFactor * self.capacity):
             self.reHash()
 
     def display_hash(self):
         for i in range(len(self.HashTable)):
             if self.HashTable[i] is None:
-                print(i, ", -->", " ")
+                print(i, ", -->", "")
             else:
                 print(i, ", -->", f'{self.HashTable[i]:<5}')
 
@@ -186,11 +184,13 @@ class doubleFunctionHash:
                 self.insert(i)
 
 
+
+
 def testObjects():
     print('---------------------------> separate chaining')
-    # hashh = separate_chaining()
-    # for i in inputs: hashh.insert(i)
-    # hashh.display_hash()
+    hashh = separate_chaining()
+    for i in inputs: hashh.insert(i)
+    hashh.display_hash()
     print('--------------------------->  linear probing')
     v = linearHash(10)
     for i in inputs: v.insert(i)
@@ -200,8 +200,19 @@ def testObjects():
     q = quadraticHash(10)
     for i in inputs: q.insert(i)
     q.display_hash()
-    print('------------------------------------- test end')
-    print('size: ', q.capacity)
+    print('------------------------------------- doubleHashing')
+    double = doubleFunctionHash(20)
+    for i in inputs: double.insert(i)
+    print(double.HashTable)
+    double.display_hash()
+    print('size: ', double.capacity)
+    print('inputsLen: ', len(inputs))
 
 
 testObjects()
+
+# Clutering of data
+# v = linearHash(20)
+# for i in inputs[:17]: v.insert(i)
+# v.display_hash()
+
