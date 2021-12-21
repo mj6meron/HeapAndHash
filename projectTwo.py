@@ -21,16 +21,12 @@ def isPrime(n):
 def nextPrime(Number):
     if Number <= 1:
         return 2
-
     prime = Number
     found = False
-
     while not found:
         prime = prime + 1
-
         if isPrime(prime) is True:
             found = True
-
     return prime
 
 
@@ -184,8 +180,6 @@ class doubleFunctionHash:
                 self.insert(i)
 
 
-
-
 def testObjects():
     print('---------------------------> separate chaining')
     hashh = separate_chaining()
@@ -215,4 +209,3 @@ testObjects()
 # v = linearHash(20)
 # for i in inputs[:17]: v.insert(i)
 # v.display_hash()
-
